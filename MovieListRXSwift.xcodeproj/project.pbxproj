@@ -18,7 +18,10 @@
 		34D768412767EDD200708586 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D768402767EDD200708586 /* MovieListViewController.swift */; };
 		34D768432767EDDF00708586 /* MovieListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34D768422767EDDF00708586 /* MovieListView.xib */; };
 		34D768452767EEF200708586 /* AppDelegateCommandControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D768442767EEF200708586 /* AppDelegateCommandControllers.swift */; };
-		34D7684A2767F0EB00708586 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 34D768492767F0EB00708586 /* PromiseKit */; };
+		34D7684C2767F3D400708586 /* MovieAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7684B2767F3D400708586 /* MovieAPI.swift */; };
+		34D7684E2767F56400708586 /* MovieAPIRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7684D2767F56400708586 /* MovieAPIRequestBuilder.swift */; };
+		34D768502767F57A00708586 /* MovieAPI+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7684F2767F57A00708586 /* MovieAPI+JSON.swift */; };
+		34D768522767F58900708586 /* MovieAPI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D768512767F58900708586 /* MovieAPI+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +57,10 @@
 		34D768402767EDD200708586 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		34D768422767EDDF00708586 /* MovieListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieListView.xib; sourceTree = "<group>"; };
 		34D768442767EEF200708586 /* AppDelegateCommandControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateCommandControllers.swift; sourceTree = "<group>"; };
+		34D7684B2767F3D400708586 /* MovieAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAPI.swift; sourceTree = "<group>"; };
+		34D7684D2767F56400708586 /* MovieAPIRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAPIRequestBuilder.swift; sourceTree = "<group>"; };
+		34D7684F2767F57A00708586 /* MovieAPI+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieAPI+JSON.swift"; sourceTree = "<group>"; };
+		34D768512767F58900708586 /* MovieAPI+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieAPI+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +68,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34D7684A2767F0EB00708586 /* PromiseKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +141,10 @@
 		34D768382767E91800708586 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				34D7684B2767F3D400708586 /* MovieAPI.swift */,
+				34D7684D2767F56400708586 /* MovieAPIRequestBuilder.swift */,
+				34D7684F2767F57A00708586 /* MovieAPI+JSON.swift */,
+				34D768512767F58900708586 /* MovieAPI+Extension.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -216,7 +226,6 @@
 			);
 			name = MovieListRXSwift;
 			packageProductDependencies = (
-				34D768492767F0EB00708586 /* PromiseKit */,
 			);
 			productName = 360MedicsTestProject;
 			productReference = 34D768052767E8FF00708586 /* MovieListRXSwift.app */;
@@ -291,7 +300,6 @@
 			);
 			mainGroup = 34D767FC2767E8FF00708586;
 			packageReferences = (
-				34D768482767F0EB00708586 /* XCRemoteSwiftPackageReference "PromiseKit" */,
 			);
 			productRefGroup = 34D768062767E8FF00708586 /* Products */;
 			projectDirPath = "";
@@ -336,9 +344,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34D768522767F58900708586 /* MovieAPI+Extension.swift in Sources */,
 				34D7680D2767E8FF00708586 /* ViewController.swift in Sources */,
+				34D7684E2767F56400708586 /* MovieAPIRequestBuilder.swift in Sources */,
+				34D7684C2767F3D400708586 /* MovieAPI.swift in Sources */,
 				34D768092767E8FF00708586 /* AppDelegate.swift in Sources */,
 				34D768452767EEF200708586 /* AppDelegateCommandControllers.swift in Sources */,
+				34D768502767F57A00708586 /* MovieAPI+JSON.swift in Sources */,
 				34D7680B2767E8FF00708586 /* SceneDelegate.swift in Sources */,
 				34D768412767EDD200708586 /* MovieListViewController.swift in Sources */,
 			);
@@ -514,6 +526,7 @@
 				DEVELOPMENT_TEAM = R5DUS2D66C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieListRXSwift/Common/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -541,6 +554,7 @@
 				DEVELOPMENT_TEAM = R5DUS2D66C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieListRXSwift/Common/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -694,25 +708,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		34D768482767F0EB00708586 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:mxcl/PromiseKit.git";
-			requirement = {
-				branch = v6;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		34D768492767F0EB00708586 /* PromiseKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 34D768482767F0EB00708586 /* XCRemoteSwiftPackageReference "PromiseKit" */;
-			productName = PromiseKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 34D767FD2767E8FF00708586 /* Project object */;
 }

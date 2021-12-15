@@ -6,12 +6,17 @@
 //
 
 import Foundation
+import PromiseKit
 
 protocol MovieAPILogic: AnyObject {
-    
+    func searchMovie(searchText: String) -> (promise: Promise<MovieSearch>, cancel: () -> Void)
+    func searchMovieByTitle(_ title: String) -> (promise: Promise<Movie>, cancel: () -> Void)
+    func searchMovieById(_ identifier: String) -> (promise: Promise<Movie>, cancel: () -> Void)
 }
 
 class MovieAPI {
+    
+    static let nilAPIStringValue = "N/A"
     
     //MARK: - Struct and Enums
     struct ErrorApiMessage: Codable {
@@ -59,7 +64,7 @@ class MovieAPI {
     }
     
     //MARK: - Private functions
-    /* private func dataTask(request: URLRequest) -> Promise<Data> {
+    private func dataTask(request: URLRequest) -> Promise<Data> {
         return Promise<Data> { seal in
             URLSession.shared.dataTask(with: request) { (data, response, error) in
                 if let data = data, let response = response as? HTTPURLResponse {
@@ -95,9 +100,90 @@ class MovieAPI {
         return self.dataTask(request: request).map { _ in
             return Void()
         }
-    } */
+    }
+    
+    private func cancellablePromise<T: Decodable>(_ request: URLRequest) -> (promise: Promise<T>, cancel: () -> Void) {
+        var urlSessionDataTask: URLSessionDataTask?
+        var cancelme = false
+        let promise = Promise<T> { seal in
+            urlSessionDataTask = urlSession.dataTask(with: request) {(data, response, error) in
+                guard !cancelme else {
+                    seal.reject(PMKError.cancelled)
+                    return
+                }
+                if let data = data, let response = response as? HTTPURLResponse {
+                    switch response.statusCode {
+                    case 200...299:
+                        do {
+                            seal.fulfill(try JSONDecoder().decode(T.self, from: data))
+                        } catch {
+                            seal.reject(error)
+                        }
+                    default:
+                        seal.reject(Error.defaultError)
+                    }
+                } else {
+                    seal.reject(Error.defaultError)
+                }
+            }
+            urlSessionDataTask!.resume()
+        }
+        let cancel = {
+            cancelme = true
+            urlSessionDataTask?.cancel()
+        }
+        return (promise: promise, cancel: cancel)
+    }
 }
 
 extension MovieAPI: MovieAPILogic {
+    func searchMovie(searchText: String) -> (promise: Promise<MovieSearch>, cancel: () -> Void) {
+        var cancelMethod: () -> Void = { }
+        let promise = Promise<MovieSearch> { seal in
+            let searchRequest = self.requestBuilder.searchMovie(searchText)
+            let searchPromise: (promise: Promise<MovieSearch>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
+            cancelMethod = searchPromise.cancel
+            firstly {
+                searchPromise.promise
+            }.done { result in
+                seal.fulfill(result)
+            }.catch { error in
+                seal.reject(error)
+            }
+        }
+        return (promise, cancelMethod)
+    }
     
+    func searchMovieByTitle(_ title: String) -> (promise: Promise<Movie>, cancel: () -> Void) {
+        var cancelMethod: () -> Void = { }
+        let promise = Promise<Movie> { seal in
+            let searchRequest = self.requestBuilder.getMovieByTitle(title)
+            let searchPromise: (promise: Promise<Movie>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
+            cancelMethod = searchPromise.cancel
+            firstly {
+                searchPromise.promise
+            }.done { result in
+                seal.fulfill(result)
+            }.catch { error in
+                seal.reject(error)
+            }
+        }
+        return (promise, cancelMethod)
+    }
+    func searchMovieById(_ identifier: String) -> (promise: Promise<Movie>, cancel: () -> Void) {
+        var cancelMethod: () -> Void = { }
+        let promise = Promise<Movie> { seal in
+            let searchRequest = self.requestBuilder.getMovieById(identifier)
+            let searchPromise: (promise: Promise<Movie>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
+            cancelMethod = searchPromise.cancel
+            firstly {
+                searchPromise.promise
+            }.done { result in
+                seal.fulfill(result)
+            }.catch { error in
+                seal.reject(error)
+            }
+        }
+        return (promise, cancelMethod)
+    }
 }

@@ -6,28 +6,109 @@
 //
 
 import XCTest
+import PromiseKit
 @testable import MovieListRXSwift
 
 class _60MedicsTestProjectTests: XCTestCase {
-
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-
+    
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testDecodeMovie() {
+        // Given
+        let dataResponse = MockJSON.movieData
+        // When
+        do {
+            let movie = try JSONDecoder().decode(Movie.self, from: dataResponse)
+            // Then
+            XCTAssertFalse(movie.title.isEmpty)
+            XCTAssertFalse(movie.identifier.isEmpty)
+            XCTAssertFalse(movie.releaseDate ?? Date() < Date())
+            XCTAssertGreaterThan(movie.actors.count, 1)
+        } catch let decodeError {
+            print(decodeError)
+            XCTFail(decodeError.localizedDescription)
+        }
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testDecodeMovieSearch() {
+        // Given
+        let dataResponse = MockJSON.moviesData
+        // When
+        do {
+            let movieSearch = try JSONDecoder().decode(MovieSearch.self, from: dataResponse)
+            // Then
+            XCTAssertFalse(movieSearch.movies.isEmpty)
+        } catch let decodeError {
+            print(decodeError)
+            XCTFail(decodeError.localizedDescription)
         }
     }
 
+    
+    func testMovieSearch() {
+        // Given
+        let searchText = "Dark knight"
+        // When
+        let expectation = self.expectation(description: "testMovieSearch")
+        firstly {
+            MovieAPI.shared.searchMovie(searchText: searchText).promise
+        }.done { movieSearch in
+            // Then
+            XCTAssertFalse(movieSearch.movies.isEmpty)
+        }.catch { error in
+            XCTFail("Fail JSON Parsing indice :\(error)")
+        }.finally {
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testMovieSearchByTitle() {
+        // Given
+        let searchTitle = "The Dark Knight"
+        // When
+        let expectation = self.expectation(description: "testMovieSearchByTitle")
+        firstly {
+            MovieAPI.shared.searchMovieByTitle(searchTitle).promise
+        }.done { movie in
+            // Then
+            XCTAssertFalse(movie.title.isEmpty)
+            XCTAssertFalse(movie.identifier.isEmpty)
+            XCTAssertFalse(movie.releaseDate ?? Date() < Date())
+            XCTAssertGreaterThan(movie.actors.count, 1)
+        }.catch { error in
+            XCTFail("Fail JSON Parsing indice :\(error)")
+        }.finally {
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testMovieSearchById() {
+        // Given
+        let searchId = "tt0468569"
+        // When
+        let expectation = self.expectation(description: "testMovieSearchById")
+        firstly {
+            MovieAPI.shared.searchMovieById(searchId).promise
+        }.done { movie in
+            // Then
+            XCTAssertFalse(movie.title.isEmpty)
+            XCTAssertFalse(movie.identifier.isEmpty)
+            XCTAssertFalse(movie.releaseDate ?? Date() < Date())
+            XCTAssertGreaterThan(movie.actors.count, 1)
+        }.catch { error in
+            XCTFail("Fail JSON Parsing indice :\(error)")
+        }.finally {
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 10, handler: nil)
+    }
+    
 }

@@ -7,6 +7,27 @@
 
 import Foundation
 
+struct MovieSearchError: Decodable {
+    let hasResponse: Bool
+    let error: String
+    
+    enum CodingKeys: String, CodingKey {
+        case hasResponse = "Response"
+        case error = "Error"
+    }
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let hasResponseString = try container.decode(String.self, forKey: .hasResponse)
+        if hasResponseString == "False" {
+            self.hasResponse = false
+        } else {
+            self.hasResponse = true
+        }
+        
+        self.error = try container.decode(String.self, forKey: .error)
+    }
+}
+
 struct MovieSearch: Decodable {
     let movies: [Movie]
     let totalResults: Int
@@ -14,7 +35,6 @@ struct MovieSearch: Decodable {
     enum CodingKeys: String, CodingKey {
         case search = "Search"
         case totalResults
-        
     }
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

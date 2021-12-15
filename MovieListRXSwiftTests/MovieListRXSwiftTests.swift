@@ -49,6 +49,20 @@ class _60MedicsTestProjectTests: XCTestCase {
             XCTFail(decodeError.localizedDescription)
         }
     }
+    
+    func testDecodeMovieSearchError() {
+        // Given
+        let dataResponse = MockJSON.movieSearchErrorData
+        // When
+        do {
+            let movieSearchError = try JSONDecoder().decode(MovieSearchError.self, from: dataResponse)
+            // Then
+            XCTAssertFalse(movieSearchError.error.isEmpty)
+        } catch let decodeError {
+            print(decodeError)
+            XCTFail(decodeError.localizedDescription)
+        }
+    }
 
     
     func testMovieSearch() {
@@ -60,7 +74,35 @@ class _60MedicsTestProjectTests: XCTestCase {
             MovieAPI.shared.searchMovie(searchText: searchText).promise
         }.done { movieSearch in
             // Then
-            XCTAssertFalse(movieSearch.movies.isEmpty)
+            if let error = movieSearch.error {
+                XCTFail(error.error)
+            } else if let movieSearch = movieSearch.result {
+                XCTAssertFalse(movieSearch.movies.isEmpty)
+            } else {
+                XCTFail("Shouldn't happen")
+            }
+        }.catch { error in
+            XCTFail("Fail JSON Parsing indice :\(error)")
+        }.finally {
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testMovieSearchError() {
+        // Given
+        let searchText = "D"
+        // When
+        let expectation = self.expectation(description: "testMovieSearchError")
+        firstly {
+            MovieAPI.shared.searchMovie(searchText: searchText).promise
+        }.done { movieSearch in
+            // Then
+            if let error = movieSearch.error {
+                XCTAssertFalse(error.hasResponse)
+            } else {
+                XCTFail("Shouldn't happen")
+            }
         }.catch { error in
             XCTFail("Fail JSON Parsing indice :\(error)")
         }.finally {
@@ -78,10 +120,16 @@ class _60MedicsTestProjectTests: XCTestCase {
             MovieAPI.shared.searchMovieByTitle(searchTitle).promise
         }.done { movie in
             // Then
-            XCTAssertFalse(movie.title.isEmpty)
-            XCTAssertFalse(movie.identifier.isEmpty)
-            XCTAssertFalse(movie.releaseDate ?? Date() < Date())
-            XCTAssertGreaterThan(movie.actors.count, 1)
+            if let error = movie.error {
+                XCTFail(error.error)
+            } else if let movie = movie.result {
+                XCTAssertFalse(movie.title.isEmpty)
+                XCTAssertFalse(movie.identifier.isEmpty)
+                XCTAssertFalse(movie.releaseDate ?? Date() < Date())
+                XCTAssertGreaterThan(movie.actors.count, 1)
+            } else {
+                XCTFail("Shouldn't happen")
+            }
         }.catch { error in
             XCTFail("Fail JSON Parsing indice :\(error)")
         }.finally {
@@ -99,10 +147,16 @@ class _60MedicsTestProjectTests: XCTestCase {
             MovieAPI.shared.searchMovieById(searchId).promise
         }.done { movie in
             // Then
-            XCTAssertFalse(movie.title.isEmpty)
-            XCTAssertFalse(movie.identifier.isEmpty)
-            XCTAssertFalse(movie.releaseDate ?? Date() < Date())
-            XCTAssertGreaterThan(movie.actors.count, 1)
+            if let error = movie.error {
+                XCTFail(error.error)
+            } else if let movie = movie.result {
+                XCTAssertFalse(movie.title.isEmpty)
+                XCTAssertFalse(movie.identifier.isEmpty)
+                XCTAssertFalse(movie.releaseDate ?? Date() < Date())
+                XCTAssertGreaterThan(movie.actors.count, 1)
+            } else {
+                XCTFail("Shouldn't happen")
+            }
         }.catch { error in
             XCTFail("Fail JSON Parsing indice :\(error)")
         }.finally {

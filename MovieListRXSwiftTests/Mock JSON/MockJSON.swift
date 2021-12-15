@@ -8,12 +8,16 @@
 import Foundation
 class MockJSON{
     
-    static var movieData : Data {
+    static var movieData: Data {
         return MockJSON.loadDataFromJSON(with: "MovieSearchByTitle")
     }
     
-    static var moviesData : Data {
+    static var moviesData: Data {
         return MockJSON.loadDataFromJSON(with: "MovieSearch")
+    }
+    
+    static var movieSearchErrorData: Data {
+        return MockJSON.loadDataFromJSON(with: "SearchError")
     }
     
     static func loadDataFromJSON(with name : String) -> Data {

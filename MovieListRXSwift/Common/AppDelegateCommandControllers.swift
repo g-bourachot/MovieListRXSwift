@@ -42,6 +42,10 @@ struct InitialViewControllerCommand: Command {
     let keyWindow: UIWindow
 
     func execute() {
-        keyWindow.rootViewController = MovieListViewController()
+        let movieListViewController = MovieListViewController()
+        movieListViewController.title = "Crazy movies"
+        let navigationController = UINavigationController(rootViewController: movieListViewController)
+        navigationController.navigationBar.prefersLargeTitles = false
+        keyWindow.rootViewController = navigationController
     }
 }

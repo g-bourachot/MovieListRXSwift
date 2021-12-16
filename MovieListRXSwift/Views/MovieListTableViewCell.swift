@@ -14,7 +14,8 @@ class MovieListTableViewCell: UITableViewCell {
     // MARK: - IBOutlets
     @IBOutlet weak var movieTitleLabel: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
-
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     // MARK: - Public functions
     func configureCell(with movie: Movie) {
         self.posterImageView.image = nil
@@ -22,6 +23,11 @@ class MovieListTableViewCell: UITableViewCell {
         if let posterURL = movie.posterURL {
             self.posterImageView.downloadedFrom(url: posterURL,
                                                 contentMode: .scaleAspectFit)
+        }
+        if let year = movie.year {
+            self.descriptionLabel.text = String(year)
+        } else {
+            self.descriptionLabel.text = nil
         }
     }
 }

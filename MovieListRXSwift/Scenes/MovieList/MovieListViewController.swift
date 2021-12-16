@@ -12,6 +12,7 @@ import RxCocoa
 
 protocol MovieListDisplayLogic: AnyObject {
     func searchMovies(searchText: String)
+    func routeToDetail(movieId: Movie.Identifier)
 }
 
 class MovieListViewController: UIViewController {
@@ -64,7 +65,7 @@ class MovieListViewController: UIViewController {
         }.disposed(by: bag)
         
         tableView.rx.modelSelected(Movie.self).subscribe(onNext: { movie in
-            print("SelectedItem: \(movie.title)")
+            self.routeToDetail(movieId: movie.identifier)
         }).disposed(by: bag)
     }
     
@@ -92,6 +93,12 @@ extension MovieListViewController: UITableViewDelegate {
 extension MovieListViewController: MovieListDisplayLogic {
     func searchMovies(searchText: String) {
         self.viewModel.searchMovie(searchText: searchText)
+    }
+    
+    func routeToDetail(movieId: Movie.Identifier) {
+        let destinationVC = MovieDetailsViewController()
+        destinationVC.movieIdentifier = movieId
+        self.navigationController?.pushViewController(destinationVC, animated: true)
     }
 }
 

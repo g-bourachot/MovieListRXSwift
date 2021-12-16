@@ -45,7 +45,7 @@ struct InitialViewControllerCommand: Command {
         let movieListViewController = MovieListViewController()
         movieListViewController.title = "Crazy movies"
         let navigationController = UINavigationController(rootViewController: movieListViewController)
-        navigationController.navigationBar.prefersLargeTitles = false
+        navigationController.navigationBar.setUpNavigationBarColors(displayMode: .mainColor)
         keyWindow.rootViewController = navigationController
     }
 }

@@ -31,6 +31,7 @@
 		3475C2C9276BDFFA00AD2740 /* MovieListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3475C2C8276BDFFA00AD2740 /* MovieListModels.swift */; };
 		3475C2CB276BE21C00AD2740 /* ErrorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3475C2CA276BE21C00AD2740 /* ErrorTableViewCell.swift */; };
 		3475C2CD276BE27400AD2740 /* ErrorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3475C2CC276BE27400AD2740 /* ErrorTableViewCell.xib */; };
+		3475C2CF276BE91900AD2740 /* UINavigationBarAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3475C2CE276BE91900AD2740 /* UINavigationBarAdditions.swift */; };
 		34D768092767E8FF00708586 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D768082767E8FF00708586 /* AppDelegate.swift */; };
 		34D7680B2767E8FF00708586 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7680A2767E8FF00708586 /* SceneDelegate.swift */; };
 		34D768122767E90000708586 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D768112767E90000708586 /* Assets.xcassets */; };
@@ -81,6 +82,7 @@
 		3475C2C8276BDFFA00AD2740 /* MovieListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListModels.swift; sourceTree = "<group>"; };
 		3475C2CA276BE21C00AD2740 /* ErrorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTableViewCell.swift; sourceTree = "<group>"; };
 		3475C2CC276BE27400AD2740 /* ErrorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorTableViewCell.xib; sourceTree = "<group>"; };
+		3475C2CE276BE91900AD2740 /* UINavigationBarAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationBarAdditions.swift; sourceTree = "<group>"; };
 		34D768052767E8FF00708586 /* MovieListRXSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieListRXSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D768082767E8FF00708586 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34D7680A2767E8FF00708586 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				344AA28B276A7C92006E0B78 /* StringAdditions.swift */,
+				3475C2CE276BE91900AD2740 /* UINavigationBarAdditions.swift */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3475C2CB276BE21C00AD2740 /* ErrorTableViewCell.swift in Sources */,
+				3475C2CF276BE91900AD2740 /* UINavigationBarAdditions.swift in Sources */,
 				34D768522767F58900708586 /* MovieAPI+Extension.swift in Sources */,
 				344AA28C276A7C92006E0B78 /* StringAdditions.swift in Sources */,
 				34D7684E2767F56400708586 /* MovieAPIRequestBuilder.swift in Sources */,
@@ -633,8 +637,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -662,8 +666,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

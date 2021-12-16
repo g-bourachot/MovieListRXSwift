@@ -56,16 +56,36 @@ class MovieListViewController: UIViewController {
     }
     
     private func bindTableView() {
-        tableView.register(UINib(nibName: "MovieListTableViewCell", bundle: nil), forCellReuseIdentifier: "MovieListTableViewCell")
+        self.tableView.register(UINib(nibName: "MovieListTableViewCell", bundle: nil), forCellReuseIdentifier: "MovieListTableViewCell")
+        self.tableView.register(UINib(nibName: "ErrorTableViewCell", bundle: nil), forCellReuseIdentifier: "ErrorTableViewCell")
         viewModel.items.bind(to: tableView
                                 .rx
-                                .items(cellIdentifier: "MovieListTableViewCell",
-                                       cellType: MovieListTableViewCell.self)) { (row,item,cell) in
-            cell.configureCell(with: item)
+                                .items) { tableView, index, element in
+            let indexPath = IndexPath(item: index, section: 0)
+            switch element {
+            case .movie(let movie):
+                guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "MovieListTableViewCell",
+                                                                    for: indexPath) as? MovieListTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.configureCell(with: movie)
+                return cell
+            case .error(let errorMessage):
+                guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "ErrorTableViewCell",
+                                                                    for: indexPath) as? ErrorTableViewCell else {
+                    return UITableViewCell()
+                }
+                cell.configureCell(with: errorMessage)
+                return cell
+            case .empty:
+                return UITableViewCell()
+            }
         }.disposed(by: bag)
         
-        tableView.rx.modelSelected(Movie.self).subscribe(onNext: { movie in
-            self.routeToDetail(movieId: movie.identifier)
+        tableView.rx.modelSelected(MovieList.CellModel.self).subscribe(onNext: { cellModel in
+            if case .movie(let movie) = cellModel {
+                self.routeToDetail(movieId: movie.identifier)
+            }
         }).disposed(by: bag)
     }
     

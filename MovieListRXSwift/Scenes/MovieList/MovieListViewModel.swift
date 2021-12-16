@@ -12,7 +12,7 @@ import PromiseKit
 
 protocol MovieListViewModelLogic: AnyObject {
     var movieAPI: MovieAPILogic { get }
-    var items: PublishSubject<[Movie]> { get }
+    var items: PublishSubject<[MovieList.CellModel]> { get }
     func searchMovie(searchText: String)
     func cancelCurrentSearch()
 }
@@ -21,7 +21,7 @@ class MovieListViewModel: MovieListViewModelLogic {
     
     // MARK: - Variables
     var movieAPI: MovieAPILogic
-    var items = PublishSubject<[Movie]>()
+    var items = PublishSubject<[MovieList.CellModel]>()
     private var currentSearch: (promise: Promise<MovieSearch>, cancel: () -> Void)?
     
     init(movieAPI: MovieAPILogic) {
@@ -35,10 +35,11 @@ class MovieListViewModel: MovieListViewModelLogic {
         firstly {
             search.promise
         }.done { movieSearch in
-            if movieSearch.error != nil {
-                self.items.onNext([])
+            if let error = movieSearch.error {
+                self.items.onNext([.error(error)])
             } else {
-                self.items.onNext(movieSearch.movies)
+                let cellModels = movieSearch.movies.map { MovieList.CellModel.movie($0) }
+                self.items.onNext(cellModels)
             }            
         }.catch { error in
             self.items.onError(error)

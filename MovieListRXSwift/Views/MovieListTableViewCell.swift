@@ -18,6 +18,7 @@ class MovieListTableViewCell: UITableViewCell {
     
     // MARK: - Public functions
     func configureCell(with movie: Movie) {
+        self.selectionStyle = .none
         self.posterImageView.image = nil
         self.movieTitleLabel.text = movie.title
         if let posterURL = movie.posterURL {

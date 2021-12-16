@@ -9,7 +9,7 @@ import XCTest
 import PromiseKit
 @testable import MovieListRXSwift
 
-class _60MedicsTestProjectTests: XCTestCase {
+class MovieListRXSwiftTests: XCTestCase {
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -55,7 +55,7 @@ class _60MedicsTestProjectTests: XCTestCase {
         let dataResponse = MockJSON.movieSearchErrorData
         // When
         do {
-            let movieSearchError = try JSONDecoder().decode(MovieSearchError.self, from: dataResponse)
+            let movieSearchError = try JSONDecoder().decode(MovieSearch.self, from: dataResponse)
             // Then
             XCTAssertFalse(movieSearchError.error.isEmpty)
         } catch let decodeError {
@@ -63,7 +63,7 @@ class _60MedicsTestProjectTests: XCTestCase {
             XCTFail(decodeError.localizedDescription)
         }
     }
-
+    
     
     func testMovieSearch() {
         // Given
@@ -75,11 +75,9 @@ class _60MedicsTestProjectTests: XCTestCase {
         }.done { movieSearch in
             // Then
             if let error = movieSearch.error {
-                XCTFail(error.error)
-            } else if let movieSearch = movieSearch.result {
-                XCTAssertFalse(movieSearch.movies.isEmpty)
+                XCTFail(error)
             } else {
-                XCTFail("Shouldn't happen")
+                XCTAssertFalse(movieSearch.movies.isEmpty)
             }
         }.catch { error in
             XCTFail("Fail JSON Parsing indice :\(error)")
@@ -99,7 +97,8 @@ class _60MedicsTestProjectTests: XCTestCase {
         }.done { movieSearch in
             // Then
             if let error = movieSearch.error {
-                XCTAssertFalse(error.hasResponse)
+                XCTAssertFalse(error.isEmpty)
+                XCTAssertFalse(movieSearch.hasResponse)
             } else {
                 XCTFail("Shouldn't happen")
             }
@@ -120,16 +119,10 @@ class _60MedicsTestProjectTests: XCTestCase {
             MovieAPI.shared.searchMovieByTitle(searchTitle).promise
         }.done { movie in
             // Then
-            if let error = movie.error {
-                XCTFail(error.error)
-            } else if let movie = movie.result {
-                XCTAssertFalse(movie.title.isEmpty)
-                XCTAssertFalse(movie.identifier.isEmpty)
-                XCTAssertFalse(movie.releaseDate ?? Date() < Date())
-                XCTAssertGreaterThan(movie.actors.count, 1)
-            } else {
-                XCTFail("Shouldn't happen")
-            }
+            XCTAssertFalse(movie.title.isEmpty)
+            XCTAssertFalse(movie.identifier.isEmpty)
+            XCTAssertFalse(movie.releaseDate ?? Date() < Date())
+            XCTAssertGreaterThan(movie.actors.count, 1)
         }.catch { error in
             XCTFail("Fail JSON Parsing indice :\(error)")
         }.finally {
@@ -147,16 +140,10 @@ class _60MedicsTestProjectTests: XCTestCase {
             MovieAPI.shared.searchMovieById(searchId).promise
         }.done { movie in
             // Then
-            if let error = movie.error {
-                XCTFail(error.error)
-            } else if let movie = movie.result {
-                XCTAssertFalse(movie.title.isEmpty)
-                XCTAssertFalse(movie.identifier.isEmpty)
-                XCTAssertFalse(movie.releaseDate ?? Date() < Date())
-                XCTAssertGreaterThan(movie.actors.count, 1)
-            } else {
-                XCTFail("Shouldn't happen")
-            }
+            XCTAssertFalse(movie.title.isEmpty)
+            XCTAssertFalse(movie.identifier.isEmpty)
+            XCTAssertFalse(movie.releaseDate ?? Date() < Date())
+            XCTAssertGreaterThan(movie.actors.count, 1)
         }.catch { error in
             XCTFail("Fail JSON Parsing indice :\(error)")
         }.finally {
@@ -164,5 +151,4 @@ class _60MedicsTestProjectTests: XCTestCase {
         }
         self.waitForExpectations(timeout: 10, handler: nil)
     }
-    
 }

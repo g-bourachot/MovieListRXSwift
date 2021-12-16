@@ -9,9 +9,10 @@ import Foundation
 import PromiseKit
 
 protocol MovieAPILogic: AnyObject {
-    func searchMovie(searchText: String) -> (promise: Promise<(result: MovieSearch?, error: MovieSearchError?)>, cancel: () -> Void)
-    func searchMovieByTitle(_ title: String) -> (promise: Promise<(result: Movie?, error: MovieSearchError?)>, cancel: () -> Void)
-    func searchMovieById(_ identifier: String) -> (promise: Promise<(result: Movie?, error: MovieSearchError?)>, cancel: () -> Void)
+    var previousSearch: MovieSearch? { get }
+    func searchMovie(searchText: String) -> (promise: Promise<MovieSearch>, cancel: () -> Void)
+    func searchMovieByTitle(_ title: String) -> (promise: Promise<Movie>, cancel: () -> Void)
+    func searchMovieById(_ identifier: String) -> (promise: Promise<Movie>, cancel: () -> Void)
 }
 
 class MovieAPI {
@@ -21,6 +22,7 @@ class MovieAPI {
     //MARK: - Struct and Enums
     enum Error: Swift.Error {
         case defaultError
+        case cancelled
     }
     
     // MARK: - Singleton
@@ -29,6 +31,7 @@ class MovieAPI {
     // MARK: - Variables
     let requestBuilder: MovieAPIRequestBuilder
     let urlSession: URLSession
+    var previousSearch: MovieSearch?
     
     //MARK: - Initializers
     public init(requestBuilder: MovieAPIRequestBuilder) {
@@ -37,68 +40,78 @@ class MovieAPI {
     }
     
     //MARK: - Private functions
-    private func cancellablePromise<T: Decodable>(_ request: URLRequest) -> (promise: Promise<(result: T?, error: MovieSearchError?)>, cancel: () -> Void) {
+    private func cancellablePromise<T: Decodable>(_ request: URLRequest) -> (promise: Promise<T>, cancel: () -> Void) {
         var urlSessionDataTask: URLSessionDataTask?
         var cancelme = false
-        let promise = Promise<(result: T?, error: MovieSearchError?)> { seal in
+        
+        let (promise, resolver) = Promise<T>.pending()
+        //let promise = Promise<T> { seal in
             urlSessionDataTask = urlSession.dataTask(with: request) {(data, response, error) in
                 guard !cancelme else {
-                    seal.reject(PMKError.cancelled)
+                    resolver.reject(PMKError.cancelled)
                     return
                 }
                 if let data = data, let response = response as? HTTPURLResponse {
                     switch response.statusCode {
                     case 200...299:
                         do {
-                            let decodedData = try JSONDecoder().decode(T.self, from: data)
-                            seal.fulfill((result: decodedData, error: nil))
+                            resolver.fulfill(try JSONDecoder().decode(T.self, from: data))
                         } catch {
-                            if let movieSearchError = try? JSONDecoder().decode(MovieSearchError.self, from: data) {
-                                seal.fulfill((result: nil, error: movieSearchError))
-                            } else {
-                                seal.reject(error)
-                            }
+                            resolver.reject(error)
                         }
                     default:
-                        seal.reject(Error.defaultError)
+                        resolver.reject(Error.defaultError)
                     }
                 } else {
-                    seal.reject(Error.defaultError)
+                    resolver.reject(Error.defaultError)
                 }
             }
             urlSessionDataTask!.resume()
-        }
+        //}
         let cancel = {
             cancelme = true
             urlSessionDataTask?.cancel()
+            resolver.reject(MovieAPI.Error.cancelled)
         }
         return (promise: promise, cancel: cancel)
     }
 }
 
 extension MovieAPI: MovieAPILogic {
-    func searchMovie(searchText: String) -> (promise: Promise<(result: MovieSearch?, error: MovieSearchError?)>, cancel: () -> Void) {
+    func searchMovie(searchText: String) -> (promise: Promise<MovieSearch>, cancel: () -> Void) {
         var cancelMethod: () -> Void = { }
-        let promise = Promise<(result: MovieSearch?, error: MovieSearchError?)> { seal in
+        let promise = Promise<MovieSearch> { seal in
             let searchRequest = self.requestBuilder.searchMovie(searchText)
-            let searchPromise: (promise: Promise<(result: MovieSearch?, error: MovieSearchError?)>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
+            let searchPromise: (promise: Promise<MovieSearch>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
             cancelMethod = searchPromise.cancel
             firstly {
                 searchPromise.promise
             }.done { result in
+                self.previousSearch = result
                 seal.fulfill(result)
             }.catch { error in
-                seal.reject(error)
+                if case MovieAPI.Error.cancelled = error {
+                    if let previousSearch = self.previousSearch {
+                        seal.fulfill(previousSearch)
+                    } else {
+                        seal.fulfill(.init(movies: [],
+                                           totalResults: 0,
+                                           hasResponse: true,
+                                           error: nil))
+                    }
+                } else {
+                    seal.reject(error)
+                }
             }
         }
         return (promise, cancelMethod)
     }
     
-    func searchMovieByTitle(_ title: String) -> (promise: Promise<(result: Movie?, error: MovieSearchError?)>, cancel: () -> Void) {
+    func searchMovieByTitle(_ title: String) -> (promise: Promise<Movie>, cancel: () -> Void) {
         var cancelMethod: () -> Void = { }
-        let promise = Promise<(result: Movie?, error: MovieSearchError?)> { seal in
+        let promise = Promise<Movie> { seal in
             let searchRequest = self.requestBuilder.getMovieByTitle(title)
-            let searchPromise: (promise: Promise<(result: Movie?, error: MovieSearchError?)>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
+            let searchPromise: (promise: Promise<Movie>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
             cancelMethod = searchPromise.cancel
             firstly {
                 searchPromise.promise
@@ -110,11 +123,11 @@ extension MovieAPI: MovieAPILogic {
         }
         return (promise, cancelMethod)
     }
-    func searchMovieById(_ identifier: String) -> (promise: Promise<(result: Movie?, error: MovieSearchError?)>, cancel: () -> Void) {
+    func searchMovieById(_ identifier: String) -> (promise: Promise<Movie>, cancel: () -> Void) {
         var cancelMethod: () -> Void = { }
-        let promise = Promise<(result: Movie?, error: MovieSearchError?)> { seal in
+        let promise = Promise<Movie> { seal in
             let searchRequest = self.requestBuilder.getMovieById(identifier)
-            let searchPromise: (promise: Promise<(result: Movie?, error: MovieSearchError?)>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
+            let searchPromise: (promise: Promise<Movie>, cancel: () -> Void) = self.cancellablePromise(searchRequest)
             cancelMethod = searchPromise.cancel
             firstly {
                 searchPromise.promise

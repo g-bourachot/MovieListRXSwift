@@ -39,6 +39,7 @@
 		34D7684E2767F56400708586 /* MovieAPIRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7684D2767F56400708586 /* MovieAPIRequestBuilder.swift */; };
 		34D768502767F57A00708586 /* MovieAPI+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7684F2767F57A00708586 /* MovieAPI+JSON.swift */; };
 		34D768522767F58900708586 /* MovieAPI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D768512767F58900708586 /* MovieAPI+Extension.swift */; };
+		34D851C3276BC2FE00318007 /* MovieListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D851C2276BC2FE00318007 /* MovieListModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		34D7684D2767F56400708586 /* MovieAPIRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAPIRequestBuilder.swift; sourceTree = "<group>"; };
 		34D7684F2767F57A00708586 /* MovieAPI+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieAPI+JSON.swift"; sourceTree = "<group>"; };
 		34D768512767F58900708586 /* MovieAPI+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieAPI+Extension.swift"; sourceTree = "<group>"; };
+		34D851C2276BC2FE00318007 /* MovieListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +239,7 @@
 				34D768402767EDD200708586 /* MovieListViewController.swift */,
 				34D768422767EDDF00708586 /* MovieListView.xib */,
 				344AA2A5276A99CC006E0B78 /* MovieListViewModel.swift */,
+				34D851C2276BC2FE00318007 /* MovieListModels.swift */,
 			);
 			path = MovieList;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				34D768092767E8FF00708586 /* AppDelegate.swift in Sources */,
 				34D768452767EEF200708586 /* AppDelegateCommandControllers.swift in Sources */,
 				344AA299276A9566006E0B78 /* MovieListTableViewCell.swift in Sources */,
+				34D851C3276BC2FE00318007 /* MovieListModels.swift in Sources */,
 				34D768502767F57A00708586 /* MovieAPI+JSON.swift in Sources */,
 				34D7680B2767E8FF00708586 /* SceneDelegate.swift in Sources */,
 				34D768412767EDD200708586 /* MovieListViewController.swift in Sources */,

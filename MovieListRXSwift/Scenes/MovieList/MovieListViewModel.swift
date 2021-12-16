@@ -29,16 +29,21 @@ class MovieListViewModel: MovieListViewModelLogic {
     }
     
     func searchMovie(searchText: String) {
+        self.cancelCurrentSearch()
+        let search = self.movieAPI.searchMovie(searchText: searchText)
+        self.currentSearch = search
         firstly {
-            self.movieAPI.searchMovie(searchText: searchText).promise
+            search.promise
         }.done { movieSearch in
             if movieSearch.error != nil {
                 self.items.onNext([])
-            } else if let movies = movieSearch.result?.movies {
-                self.items.onNext(movies)
+            } else {
+                self.items.onNext(movieSearch.movies)
             }            
         }.catch { error in
             self.items.onError(error)
+        }.finally {
+            self.currentSearch = nil
         }
     }
     

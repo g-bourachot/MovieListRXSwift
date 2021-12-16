@@ -7,16 +7,31 @@
 
 import Foundation
 
-struct MovieSearchError: Decodable {
+struct MovieSearch: Decodable {
+    let movies: [Movie]
+    let totalResults: Int?
     let hasResponse: Bool
-    let error: String
+    let error: String?
     
     enum CodingKeys: String, CodingKey {
+        case search = "Search"
+        case totalResults
         case hasResponse = "Response"
         case error = "Error"
     }
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let movies = try container.decodeIfPresent([Movie].self, forKey: .search) {
+            self.movies = movies
+        } else {
+            self.movies = []
+        }
+        if let totalResultsString = try container.decodeIfPresent(String.self, forKey: .totalResults) {
+            self.totalResults = Int(totalResultsString)
+        } else {
+            self.totalResults = nil
+        }
+        
         let hasResponseString = try container.decode(String.self, forKey: .hasResponse)
         if hasResponseString == "False" {
             self.hasResponse = false
@@ -24,23 +39,17 @@ struct MovieSearchError: Decodable {
             self.hasResponse = true
         }
         
-        self.error = try container.decode(String.self, forKey: .error)
+        self.error = try container.decodeIfPresent(String.self, forKey: .error)
     }
-}
-
-struct MovieSearch: Decodable {
-    let movies: [Movie]
-    let totalResults: Int
     
-    enum CodingKeys: String, CodingKey {
-        case search = "Search"
-        case totalResults
-    }
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.movies = try container.decode([Movie].self, forKey: .search)
-        let totalResultsString = try container.decode(String.self, forKey: .totalResults)
-        self.totalResults = Int(totalResultsString) ?? 0
+    init(movies: [Movie],
+         totalResults: Int?,
+         hasResponse: Bool,
+         error: String?) {
+        self.movies = movies
+        self.totalResults = totalResults
+        self.hasResponse = hasResponse
+        self.error = error
     }
 }
 

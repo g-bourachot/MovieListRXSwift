@@ -53,11 +53,13 @@ class MovieListViewController: UIViewController {
         tableView.rx.setDelegate(self).disposed(by: bag)
         bindTableView()
         self.setupSearchChangeHandling()
+        self.viewModel.displayEmptyCell()
     }
     
     private func bindTableView() {
         self.tableView.register(UINib(nibName: "MovieListTableViewCell", bundle: nil), forCellReuseIdentifier: "MovieListTableViewCell")
         self.tableView.register(UINib(nibName: "ErrorTableViewCell", bundle: nil), forCellReuseIdentifier: "ErrorTableViewCell")
+        self.tableView.register(UINib(nibName: "EmptyTableViewCell", bundle: nil), forCellReuseIdentifier: "EmptyTableViewCell")
         viewModel.items.bind(to: tableView
                                 .rx
                                 .items) { tableView, index, element in
@@ -78,7 +80,11 @@ class MovieListViewController: UIViewController {
                 cell.configureCell(with: errorMessage)
                 return cell
             case .empty:
-                return UITableViewCell()
+                guard let cell = self.tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell",
+                                                                    for: indexPath) as? EmptyTableViewCell else {
+                    return UITableViewCell()
+                }
+                return cell
             }
         }.disposed(by: bag)
         
@@ -91,13 +97,13 @@ class MovieListViewController: UIViewController {
     
     private func setupSearchChangeHandling() {
         uiSearchBar
-            .rx.text // Observable property thanks to RxCocoa
-            .orEmpty // Make it non-optional
+            .rx.text
+            .orEmpty
             .observe(on: MainScheduler.asyncInstance)
-            .throttle(.milliseconds(throttleIntervalInMilliseconds), scheduler: MainScheduler.instance)// Wait 0.5 for changes.
-            .distinctUntilChanged() // If they didn't occur, check if the new value is the same as old.
-            .filter { !$0.isEmpty } // If the new value is really new, filter for non-empty query.
-            .subscribe(onNext: { [unowned self] query in // Here we subscribe to every new value, that is not empty (thanks to filter above).
+            .throttle(.milliseconds(throttleIntervalInMilliseconds), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .filter { !$0.isEmpty }
+            .subscribe(onNext: { [unowned self] query in
                 self.searchMovies(searchText: query)
             })
             .disposed(by: bag)
@@ -105,7 +111,7 @@ class MovieListViewController: UIViewController {
 }
 
 extension MovieListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {        
         return UITableView.automaticDimension
     }
 }

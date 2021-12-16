@@ -34,15 +34,11 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var plotLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
-    @IBOutlet weak var ratedLabel: UILabel!
-    @IBOutlet weak var releaseDateLabel: UILabel!
-    @IBOutlet weak var runTimeLabel: UILabel!
     @IBOutlet weak var genresLabel: UILabel!
     @IBOutlet weak var directorsLabel: UILabel!
     @IBOutlet weak var writersLabel: UILabel!
     @IBOutlet weak var actorsLabel: UILabel!
     @IBOutlet weak var votesLabel: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
     
     // MARK: - Variables
     var movieIdentifier: Movie.Identifier?
@@ -77,37 +73,46 @@ class MovieDetailsViewController: UIViewController {
                                                 contentMode: .scaleAspectFit)
         }
         self.titleLabel.text = movie.title
-        self.plotLabel.text = movie.plot
+        self.plotLabel.text = (movie.plot ?? "") + "\n"
+        
+        var yearRuntime = ""
         if let year = movie.year {
-            self.yearLabel.text = String(year)
-        } else {
-            self.yearLabel.text = nil
+            yearRuntime = String(year)
         }
-        
-        self.ratedLabel.text = movie.rated
-        
-        if let releaseDate = movie.releaseDate {
-            self.releaseDateLabel.text = Movie.dateFormatter.string(from: releaseDate)
-        } else {
-            self.releaseDateLabel.text = nil
+        if let runTime = movie.runTime {
+            yearRuntime.append(" ∙ \(runTime)")
         }
+        self.yearLabel.text = yearRuntime
         
-        self.runTimeLabel.text = movie.runTime
         self.genresLabel.text = movie.genres.joined(separator: ", ")
-        self.directorsLabel.text = movie.directors.joined(separator: ", ")
-        self.writersLabel.text = movie.writers.joined(separator: ", ")
-        self.actorsLabel.text = movie.actors.joined(separator: ", ")
+        
+        if movie.directors.count > 1 {
+            self.directorsLabel.text = "Directors: " + movie.directors.joined(separator: ", ")
+        } else {
+            self.directorsLabel.text = "Director: " + movie.directors.joined(separator: ", ")
+        }
+        
+        if movie.writers.count > 1 {
+            self.writersLabel.text = "Writers: " + movie.writers.joined(separator: ", ")
+        } else {
+            self.writersLabel.text = "Writer: " + movie.writers.joined(separator: ", ")
+        }
+        
+        if movie.actors.count > 1 {
+            self.actorsLabel.text = "Actors: " + movie.actors.joined(separator: ", ")
+        } else {
+            self.actorsLabel.text = "Actor: " + movie.actors.joined(separator: ", ")
+        }
+        
+        var votesRating = ""
+        if let rating = movie.rating {
+            votesRating += String(rating) + "/10"
+        }
         
         if let votes = movie.votes {
-            self.votesLabel.text = Movie.numberFormatter.string(from: NSNumber(value: votes))
-        } else {
-            self.votesLabel.text = nil
+            votesRating += " ∙ " + (Movie.numberFormatter.string(from: NSNumber(value: votes)) ?? "") + " votes"
         }
         
-        if let rating = movie.rating {
-            self.ratingLabel.text = String(rating)
-        } else {
-            self.ratingLabel.text = nil
-        }
+        self.votesLabel.text = votesRating
     }
 }

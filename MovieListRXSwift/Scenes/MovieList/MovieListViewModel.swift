@@ -15,6 +15,7 @@ protocol MovieListViewModelLogic: AnyObject {
     var items: PublishSubject<[MovieList.CellModel]> { get }
     func searchMovie(searchText: String)
     func cancelCurrentSearch()
+    func displayEmptyCell()
 }
 
 class MovieListViewModel: MovieListViewModelLogic {
@@ -26,6 +27,10 @@ class MovieListViewModel: MovieListViewModelLogic {
     
     init(movieAPI: MovieAPILogic) {
         self.movieAPI = movieAPI
+    }
+    
+    func displayEmptyCell() {
+        self.items.onNext([.empty])
     }
     
     func searchMovie(searchText: String) {

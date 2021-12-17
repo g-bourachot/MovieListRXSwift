@@ -45,8 +45,9 @@ struct InitialViewControllerCommand: Command {
         let movieListViewController = MovieListViewController()
         let navigationController = UINavigationController(rootViewController: movieListViewController)
         navigationController.navigationBar.setUpNavigationBarColors(displayMode: .mainColor)
-        let digiSchoolLogo = UIImage.init(named: "LogoMovieHunt")
-        let logoImageView = UIImageView(image: digiSchoolLogo)
+        let movieHuntLogo = UIImage.init(named: "LogoMovieHunt")
+        let logoImageView = UIImageView(image: movieHuntLogo)
+        logoImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
         navigationController.navigationBar.topItem?.titleView = logoImageView
         keyWindow.rootViewController = navigationController
     }

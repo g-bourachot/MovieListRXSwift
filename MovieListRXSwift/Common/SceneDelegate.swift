@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let navigationController = UINavigationController(rootViewController: movieListViewController)
             navigationController.navigationBar.setUpNavigationBarColors(displayMode: .mainColor)
             
-            let titleView = UIView(frame: CGRect(x:0, y:0, width:199, height:30))
+            let titleView = UIView(frame: CGRect(x:0, y:0, width:120, height:19))
             let titleImageView = UIImageView(image: UIImage(named: "LogoMovieHunt"))
             titleImageView.frame = CGRect(x:0, y:0, width:titleView.frame.width, height: titleView.frame.height)
             titleView.addSubview(titleImageView)

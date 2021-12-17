@@ -20,11 +20,11 @@ extension UINavigationBar {
                 self.barStyle = .default
                 self.barTintColor = UIColor.init(named: "seaGreen") ?? .red
                 self.isTranslucent = true
-                self.tintColor = .black
+                self.tintColor = .white
                 self.prefersLargeTitles = false
                 self.backgroundColor = UIColor.init(named: "seaGreen") ?? .red
-                self.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-                self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+                self.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+                self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
             }
         }
 

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/liom/devl/360MedicsTestProject/MovieListRXSwift.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

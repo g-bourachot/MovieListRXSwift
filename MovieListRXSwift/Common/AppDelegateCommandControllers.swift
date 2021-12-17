@@ -42,6 +42,14 @@ struct InitialViewControllerCommand: Command {
     let keyWindow: UIWindow
 
     func execute() {
-        keyWindow.rootViewController = MovieListViewController()
+        let movieListViewController = MovieListViewController()
+        let navigationController = UINavigationController(rootViewController: movieListViewController)
+        navigationController.navigationBar.setUpNavigationBarColors(displayMode: .mainColor)
+        let titleView = UIView(frame: CGRect(x:0, y:0, width:120, height:19))
+        let titleImageView = UIImageView(image: UIImage(named: "LogoMovieHunt"))
+        titleImageView.frame = CGRect(x:0, y:0, width:titleView.frame.width, height: titleView.frame.height)
+        titleView.addSubview(titleImageView)
+        navigationController.navigationBar.topItem?.titleView = titleView
+        keyWindow.rootViewController = navigationController
     }
 }

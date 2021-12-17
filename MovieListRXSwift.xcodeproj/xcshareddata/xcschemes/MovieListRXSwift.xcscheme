@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "34D768042767E8FF00708586"
-               BuildableName = "360MedicsTestProject.app"
+               BuildableName = "MovieListRXSwift.app"
                BlueprintName = "MovieListRXSwift"
                ReferencedContainer = "container:MovieListRXSwift.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "34D7681A2767E90000708586"
-               BuildableName = "360MedicsTestProjectTests.xctest"
+               BuildableName = "MovieListRXSwiftTests.xctest"
                BlueprintName = "MovieListRXSwiftTests"
                ReferencedContainer = "container:MovieListRXSwift.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "34D768242767E90000708586"
-               BuildableName = "360MedicsTestProjectUITests.xctest"
+               BuildableName = "MovieListRXSwiftUITests.xctest"
                BlueprintName = "MovieListRXSwiftUITests"
                ReferencedContainer = "container:MovieListRXSwift.xcodeproj">
             </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "34D768042767E8FF00708586"
-            BuildableName = "360MedicsTestProject.app"
+            BuildableName = "MovieListRXSwift.app"
             BlueprintName = "MovieListRXSwift"
             ReferencedContainer = "container:MovieListRXSwift.xcodeproj">
          </BuildableReference>
@@ -82,7 +82,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "34D768042767E8FF00708586"
-            BuildableName = "360MedicsTestProject.app"
+            BuildableName = "MovieListRXSwift.app"
             BlueprintName = "MovieListRXSwift"
             ReferencedContainer = "container:MovieListRXSwift.xcodeproj">
          </BuildableReference>

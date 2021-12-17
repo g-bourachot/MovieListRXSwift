@@ -43,9 +43,11 @@ struct InitialViewControllerCommand: Command {
 
     func execute() {
         let movieListViewController = MovieListViewController()
-        movieListViewController.title = "Crazy movies"
         let navigationController = UINavigationController(rootViewController: movieListViewController)
         navigationController.navigationBar.setUpNavigationBarColors(displayMode: .mainColor)
+        let digiSchoolLogo = UIImage.init(named: "LogoMovieHunt")
+        let logoImageView = UIImageView(image: digiSchoolLogo)
+        navigationController.navigationBar.topItem?.titleView = logoImageView
         keyWindow.rootViewController = navigationController
     }
 }

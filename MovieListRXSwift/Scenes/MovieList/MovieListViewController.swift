@@ -46,7 +46,7 @@ class MovieListViewController: UIViewController {
     // MARK: - Variables
     private let bag = DisposeBag()
     private let viewModel: MovieListViewModelLogic = MovieListViewModel(movieAPI: MovieAPI.shared)
-    private let throttleIntervalInMilliseconds = 100
+    private let throttleIntervalInMilliseconds = 500
     
     // MARK: - Overrided functions
     override func viewDidLoad() {

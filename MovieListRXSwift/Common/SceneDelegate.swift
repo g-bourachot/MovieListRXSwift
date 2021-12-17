@@ -22,6 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             movieListViewController.title = "Crazy movies"
             let navigationController = UINavigationController(rootViewController: movieListViewController)
             navigationController.navigationBar.setUpNavigationBarColors(displayMode: .mainColor)
+            let digiSchoolLogo = UIImage.init(named: "LogoMovieHunt")
+            let logoImageView = UIImageView(image: digiSchoolLogo)
+            navigationController.navigationBar.topItem?.titleView = logoImageView
             window.rootViewController = navigationController
             self.window = window
             window.makeKeyAndVisible()

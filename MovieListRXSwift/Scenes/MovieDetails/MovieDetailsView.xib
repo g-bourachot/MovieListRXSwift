@@ -130,7 +130,7 @@
     </objects>
     <resources>
         <namedColor name="seaGreen">
-            <color red="0.11895054264476071" green="0.40055208409900939" blue="0.40331024484536093" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.11764705882352941" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

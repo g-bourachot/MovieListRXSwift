@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import MBProgressHUD
 
 protocol MovieListDisplayLogic: AnyObject {
     func searchMovies(searchText: String)
@@ -54,6 +55,7 @@ class MovieListViewController: UIViewController {
         bindTableView()
         self.setupSearchChangeHandling()
         self.viewModel.displayEmptyCell()
+        self.viewModel.setDelegate(to: self)
     }
     
     private func bindTableView() {
@@ -93,6 +95,8 @@ class MovieListViewController: UIViewController {
                 self.routeToDetail(movieId: movie.identifier)
             }
         }).disposed(by: bag)
+        
+        tableView.tableFooterView = UIView()
     }
     
     private func setupSearchChangeHandling() {
@@ -128,6 +132,16 @@ extension MovieListViewController: MovieListDisplayLogic {
     }
 }
 
-extension MovieListViewController: UISearchBarDelegate {
-    
+extension MovieListViewController: MovieListViewModelDelegate {
+    func showLoader(_ should: Bool) {
+        if should {
+            DispatchQueue.main.async {
+                MBProgressHUD.showAdded(to: self.view, animated: true)
+            }
+        } else {
+            DispatchQueue.main.async {
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+        }
+    }
 }

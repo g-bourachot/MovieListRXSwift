@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import GBUIKitAdditions
 
 protocol MovieDetailsDisplayLogic: AnyObject {
     
@@ -87,21 +88,39 @@ class MovieDetailsViewController: UIViewController {
         self.genresLabel.text = movie.genres.joined(separator: ", ")
         
         if movie.directors.count > 1 {
-            self.directorsLabel.text = "Directors: " + movie.directors.joined(separator: ", ")
+            let directorsAttributedString = NSMutableAttributedString()
+                .bold("Directors: ", size: 15, color: .systemGray)
+                .normal(movie.directors.joined(separator: ", "), size: 15, color: .systemGray)
+            self.directorsLabel.attributedText = directorsAttributedString
         } else {
-            self.directorsLabel.text = "Director: " + movie.directors.joined(separator: ", ")
+            let directorsAttributedString = NSMutableAttributedString()
+                .bold("Director: ", size: 15, color: .systemGray)
+                .normal(movie.directors.joined(separator: ", "), size: 15, color: .systemGray)
+            self.directorsLabel.attributedText = directorsAttributedString
         }
         
         if movie.writers.count > 1 {
-            self.writersLabel.text = "Writers: " + movie.writers.joined(separator: ", ")
+            let writersAttributedString = NSMutableAttributedString()
+                .bold("Writers: ", size: 15, color: .systemGray)
+                .normal(movie.writers.joined(separator: ", "), size: 15, color: .systemGray)
+            self.writersLabel.attributedText = writersAttributedString
         } else {
-            self.writersLabel.text = "Writer: " + movie.writers.joined(separator: ", ")
+            let writersAttributedString = NSMutableAttributedString()
+                .bold("Writer: ", size: 15, color: .systemGray)
+                .normal(movie.writers.joined(separator: ", "), size: 15, color: .systemGray)
+            self.writersLabel.attributedText = writersAttributedString
         }
         
         if movie.actors.count > 1 {
-            self.actorsLabel.text = "Actors: " + movie.actors.joined(separator: ", ")
+            let actorsAttributedString = NSMutableAttributedString()
+                .bold("Actors: ", size: 15, color: .systemGray)
+                .normal(movie.actors.joined(separator: ", "), size: 15, color: .systemGray)
+            self.actorsLabel.attributedText = actorsAttributedString
         } else {
-            self.actorsLabel.text = "Actor: " + movie.actors.joined(separator: ", ")
+            let actorsAttributedString = NSMutableAttributedString()
+                .bold("Actor: ", size: 15, color: .systemGray)
+                .normal(movie.actors.joined(separator: ", "), size: 15, color: .systemGray)
+            self.actorsLabel.attributedText = actorsAttributedString
         }
         
         var votesRating = ""
